@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
+#include <iostream>
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Understeer");
@@ -19,13 +20,28 @@ int main() {
     {
         // error...
     }
-
+    sf::Texture carTexture;
+    if (!carTexture.loadFromFile("Sprites/car1.png"))
+    {
+        // error...
+    }
+    sf::Texture raceTrack1Texture;
+    if (!raceTrack1Texture.loadFromFile("Sprites/racetrack1.png"))
+    {
+        // error...
+    }
     sf::Text titleText("UNDERSTEER", titleFont, 80);
     titleText.setFillColor(sf::Color::Black);
     titleText.setPosition(115, 40);
 
+    sf::Sprite raceTrack1Background;
+    raceTrack1Background.setTexture(raceTrack1Texture);
     sf::Sprite startMenuBackground;
     startMenuBackground.setTexture(backgroundTexture);
+    sf::Sprite carSprite;
+    carSprite.setTexture(carTexture);
+    carSprite.setOrigin(carSprite.getLocalBounds().width / 2.0f, carSprite.getLocalBounds().height / 2.0f - 10.0f);
+    carSprite.setPosition((window.getSize().x - carSprite.getLocalBounds().width) / 2.0f, (window.getSize().y - carSprite.getLocalBounds().height) / 2.0f);
 
     // Przyciski menu startowego
     sf::RectangleShape startButton(sf::Vector2f(300, 50));
@@ -123,9 +139,10 @@ int main() {
     bool inSettings = false;
     bool inSubmenu1 = false;
     bool inSubmenu2 = false;
+    bool inGame = false;
     int selectedButton = 0;
     int previousSelectedButton = 0;
-
+    float carRotation = 0.0f;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -167,6 +184,9 @@ int main() {
                         else if (event.key.code == sf::Keyboard::Enter) {
                             if (selectedButton == 0) {
                                 // Rozpocznij now¹ grê
+                                std::cout << "Enter pressed!" << std::endl;
+                                inGame = true;
+                                inSubmenu1 = false;
                             }
                             else if (selectedButton == 1) {
                                 // Wczytaj grê
@@ -223,55 +243,88 @@ int main() {
                 }
             }
         }
-
         window.clear();
-        if (!inSettings) {
-            if (!inSubmenu1) {
-                // Rysuj przyciski menu startowego
-                window.draw(startMenuBackground);
-                window.draw(titleText);
-                window.draw(startButton);
-                window.draw(settingsButton);
-                window.draw(exitButton);
-                window.draw(startText);
-                window.draw(settingsText);
-                window.draw(exitText);
+        if (inGame) {
+            // Rysuj ekran gry
+            sf::RectangleShape blackRect(sf::Vector2f(window.getSize().x, window.getSize().y));
+            blackRect.setFillColor(sf::Color::Black);
+            window.draw(raceTrack1Background);
+
+            const float velocity = 0.05f;
+            const float rotationSpeed = 0.035f;
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                // Poruszanie siê do góry zgodnie z k¹tem obrotu samochodu
+                float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
+                float offsetX = velocity * std::cos(angleRad);
+                float offsetY = velocity * std::sin(angleRad);
+
+                // Sprawdzanie czy samochód nie wyje¿d¿a poza ekran
+                if (carSprite.getPosition().x + offsetX > 0 && carSprite.getPosition().x + offsetX < window.getSize().x &&
+                    carSprite.getPosition().y + offsetY > 0 && carSprite.getPosition().y + offsetY < window.getSize().y) {
+                    carSprite.move(offsetX, offsetY);
+                }
             }
-            else if (!inSubmenu2) {
-                // Rysuj submenu 1
-                window.draw(startMenuBackground);
-                window.draw(titleText);
-                window.draw(newGameButton);
-                window.draw(loadGameButton);
-                window.draw(chooseRaceButton);
-                window.draw(backToStartButton1);
-                window.draw(newGameText);
-                window.draw(loadGameText);
-                window.draw(chooseRaceText);
-                window.draw(backToStartText1);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                carRotation -= rotationSpeed;
             }
-            else {
-                // Rysuj submenu 2
-                window.draw(startMenuBackground);
-                window.draw(titleText);
-                window.draw(option1Button);
-                window.draw(option2Button);
-                window.draw(backButton2);
-                window.draw(option1Text);
-                window.draw(option2Text);
-                window.draw(backText2);
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                carRotation += rotationSpeed;
             }
+
+            carSprite.setRotation(carRotation);
+            window.draw(carSprite);
         }
         else {
-            // Rysuj przyciski menu ustawieñ
-            window.draw(startMenuBackground);
-            window.draw(titleText);
-            window.draw(backButton2);
-            window.draw(option1Button);
-            window.draw(option2Button);
-            window.draw(backText2);
-            window.draw(option1Text);
-            window.draw(option2Text);
+            // Rysuj pozosta³e elementy w zale¿noœci od aktualnego stanu gry
+            if (!inSettings) {
+                if (!inSubmenu1) {
+                    // Rysuj przyciski menu startowego
+                    window.draw(startMenuBackground);
+                    window.draw(titleText);
+                    window.draw(startButton);
+                    window.draw(settingsButton);
+                    window.draw(exitButton);
+                    window.draw(startText);
+                    window.draw(settingsText);
+                    window.draw(exitText);
+                }
+                else if (!inSubmenu2) {
+                    // Rysuj submenu 1
+                    window.draw(startMenuBackground);
+                    window.draw(titleText);
+                    window.draw(newGameButton);
+                    window.draw(loadGameButton);
+                    window.draw(chooseRaceButton);
+                    window.draw(backToStartButton1);
+                    window.draw(newGameText);
+                    window.draw(loadGameText);
+                    window.draw(chooseRaceText);
+                    window.draw(backToStartText1);
+                }
+                else {
+                    // Rysuj submenu 2
+                    window.draw(startMenuBackground);
+                    window.draw(titleText);
+                    window.draw(option1Button);
+                    window.draw(option2Button);
+                    window.draw(backButton2);
+                    window.draw(option1Text);
+                    window.draw(option2Text);
+                    window.draw(backText2);
+                }
+            }
+            else {
+                // Rysuj przyciski menu ustawieñ
+                window.draw(startMenuBackground);
+                window.draw(titleText);
+                window.draw(backButton2);
+                window.draw(option1Button);
+                window.draw(option2Button);
+                window.draw(backText2);
+                window.draw(option1Text);
+                window.draw(option2Text);
+            }
         }
         // Zaznacz przycisk
         if (inSettings) {
@@ -361,6 +414,5 @@ int main() {
         }
         window.display();
     }
-
     return 0;
 }
