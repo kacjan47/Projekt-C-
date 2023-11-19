@@ -15,8 +15,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClInclude Include="init.hpp">
       <Filter>Pliki źródłowe</Filter>
-    </ClCompile>
+    </ClInclude>
   </ItemGroup>
 </Project>
