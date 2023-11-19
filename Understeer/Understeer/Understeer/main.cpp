@@ -30,9 +30,66 @@ int main() {
     {
         // error...
     }
+    sf::Texture roadTexture;
+    if (!roadTexture.loadFromFile("Sprites/road.png"))
+    {
+        // error...
+    }
     sf::Text titleText("UNDERSTEER", titleFont, 80);
     titleText.setFillColor(sf::Color::Black);
     titleText.setPosition(115, 40);
+
+    sf::Sprite roadSprite;
+    roadSprite.setTexture(roadTexture);
+    roadSprite.setOrigin(roadSprite.getLocalBounds().width / 2.0f, roadSprite.getLocalBounds().height / 2.0f);
+
+    std::vector<sf::Sprite> roadSprites;
+    for (int i = 0; i < 41; ++i) {
+        sf::Sprite roadPart(roadTexture);
+        roadPart.setOrigin(roadPart.getLocalBounds().width / 2.0f, roadPart.getLocalBounds().height / 2.0f);
+        roadPart.setPosition(100.0f + i * 50.0f, 100.0f);
+        roadSprites.push_back(roadPart);
+    }
+    roadSprites[0].setPosition(100.0f, 100.0f);
+    roadSprites[1].setPosition(150.0f, 100.0f);
+    roadSprites[2].setPosition(200.0f, 100.0f);
+    roadSprites[4].setPosition(250.0f, 100.0f);
+    roadSprites[5].setPosition(300.0f, 100.0f);
+    roadSprites[6].setPosition(350.0f, 100.0f);
+    roadSprites[7].setPosition(400.0f, 100.0f);
+    roadSprites[8].setPosition(450.0f, 100.0f);
+    roadSprites[9].setPosition(500.0f, 100.0f);
+    roadSprites[10].setPosition(550.0f, 100.0f);
+    roadSprites[11].setPosition(600.0f, 100.0f);
+    roadSprites[12].setPosition(650.0f, 100.0f);
+    roadSprites[13].setPosition(700.0f, 100.0f);
+    roadSprites[14].setPosition(700.0f, 150.0f);
+    roadSprites[15].setPosition(700.0f, 200.0f);
+    roadSprites[16].setPosition(700.0f, 250.0f);
+    roadSprites[17].setPosition(700.0f, 300.0f);
+    roadSprites[18].setPosition(700.0f, 350.0f);
+    roadSprites[19].setPosition(700.0f, 400.0f);
+    roadSprites[20].setPosition(700.0f, 450.0f);
+    roadSprites[21].setPosition(700.0f, 500.0f);
+    roadSprites[22].setPosition(650.0f, 500.0f);
+    roadSprites[23].setPosition(600.0f, 500.0f);
+    roadSprites[24].setPosition(550.0f, 500.0f);
+    roadSprites[25].setPosition(500.0f, 500.0f);
+    roadSprites[26].setPosition(450.0f, 500.0f);
+    roadSprites[27].setPosition(400.0f, 500.0f);
+    roadSprites[28].setPosition(350.0f, 500.0f);
+    roadSprites[29].setPosition(300.0f, 500.0f);
+    roadSprites[30].setPosition(250.0f, 500.0f);
+    roadSprites[31].setPosition(200.0f, 500.0f);
+    roadSprites[32].setPosition(150.0f, 500.0f);
+    roadSprites[33].setPosition(100.0f, 500.0f);
+    roadSprites[34].setPosition(100.0f, 450.0f);
+    roadSprites[35].setPosition(100.0f, 400.0f);
+    roadSprites[36].setPosition(100.0f, 350.0f);
+    roadSprites[37].setPosition(100.0f, 300.0f);
+    roadSprites[38].setPosition(100.0f, 250.0f);
+    roadSprites[39].setPosition(100.0f, 200.0f);
+    roadSprites[40].setPosition(100.0f, 150.0f);
 
     sf::Sprite raceTrack1Background;
     raceTrack1Background.setTexture(raceTrack1Texture);
@@ -40,8 +97,8 @@ int main() {
     startMenuBackground.setTexture(backgroundTexture);
     sf::Sprite carSprite;
     carSprite.setTexture(carTexture);
-    carSprite.setOrigin(carSprite.getLocalBounds().width / 2.0f, carSprite.getLocalBounds().height / 2.0f - 10.0f);
-    carSprite.setPosition((window.getSize().x - carSprite.getLocalBounds().width) / 2.0f, (window.getSize().y - carSprite.getLocalBounds().height) / 2.0f);
+    carSprite.setOrigin(carSprite.getLocalBounds().width / 2.0f, carSprite.getLocalBounds().height / 2.0f);
+    carSprite.setPosition(100.0f,100.0f);
 
     // Przyciski menu startowego
     sf::RectangleShape startButton(sf::Vector2f(300, 50));
@@ -143,6 +200,7 @@ int main() {
     int selectedButton = 0;
     int previousSelectedButton = 0;
     float carRotation = 0.0f;
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -249,20 +307,51 @@ int main() {
             sf::RectangleShape blackRect(sf::Vector2f(window.getSize().x, window.getSize().y));
             blackRect.setFillColor(sf::Color::Black);
             window.draw(raceTrack1Background);
-
+            for (const auto& roadPart : roadSprites) {
+                window.draw(roadPart);
+            }
             const float velocity = 0.05f;
             const float rotationSpeed = 0.035f;
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-                // Poruszanie siê do góry zgodnie z k¹tem obrotu samochodu
-                float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
-                float offsetX = velocity * std::cos(angleRad);
-                float offsetY = velocity * std::sin(angleRad);
+            sf::Vector2f carPosition = carSprite.getPosition();
+            float carWidth = carSprite.getGlobalBounds().width;
+            float carHeight = carSprite.getGlobalBounds().height;
 
-                // Sprawdzanie czy samochód nie wyje¿d¿a poza ekran
-                if (carSprite.getPosition().x + offsetX > 0 && carSprite.getPosition().x + offsetX < window.getSize().x &&
-                    carSprite.getPosition().y + offsetY > 0 && carSprite.getPosition().y + offsetY < window.getSize().y) {
-                    carSprite.move(offsetX, offsetY);
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                    for (const auto& roadPart : roadSprites) {
+                        if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
+                            // Samochód znajduje siê w elemencie drogi
+                            float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
+                            float offsetX = velocity * std::cos(angleRad);
+                            float offsetY = velocity * std::sin(angleRad);
+
+                            // Sprawdzanie czy samochód nie wyje¿d¿a poza element drogi
+                            if (carSprite.getPosition().x + offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
+                                carSprite.getPosition().x + offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
+                                carSprite.getPosition().y + offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
+                                carSprite.getPosition().y + offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
+                                carSprite.move(offsetX, offsetY);
+                            }
+                        }
+                    }
+                }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                for (const auto& roadPart : roadSprites) {
+                    if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
+                        // Samochód znajduje siê w elemencie drogi
+                        float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
+                        float offsetX = velocity * std::cos(angleRad);
+                        float offsetY = velocity * std::sin(angleRad);
+
+                        // Sprawdzanie czy samochód nie wyje¿d¿a poza element drogi
+                        if (carSprite.getPosition().x + offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
+                            carSprite.getPosition().x + offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
+                            carSprite.getPosition().y + offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
+                            carSprite.getPosition().y + offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
+                            carSprite.move(-offsetX, -offsetY);
+                        }
+                    }
                 }
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {

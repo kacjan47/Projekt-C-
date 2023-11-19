@@ -1,5 +1,5 @@
 ﻿  main.cpp
-C:\Users\kacja\Documents\GitHub\Projekt-C-\Understeer\Understeer\Understeer\main.cpp(249,91): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+C:\Users\kacja\Documents\GitHub\Projekt-C-\Understeer\Understeer\Understeer\main.cpp(307,91): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
           with
           [
               T=unsigned int
@@ -8,7 +8,7 @@ C:\Users\kacja\Documents\GitHub\Projekt-C-\Understeer\Understeer\Understeer\main
           [
               T=float
           ]
-C:\Users\kacja\Documents\GitHub\Projekt-C-\Understeer\Understeer\Understeer\main.cpp(249,71): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
+C:\Users\kacja\Documents\GitHub\Projekt-C-\Understeer\Understeer\Understeer\main.cpp(307,71): warning C4244: "argument": konwersja z "T" do "T", możliwa utrata danych
           with
           [
               T=unsigned int
