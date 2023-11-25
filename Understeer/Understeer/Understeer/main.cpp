@@ -1,6 +1,18 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
 #include <iostream>
+#include "init.h"
+
+float currentSpeed = 0.0f;
+bool accelerating = false;
+bool isAccelerating = false;
+bool wasKeyPressed = false;
+sf::Clock keyTimer;
+const float rotationSpeed = 0.035f;
+const float acceleration = 0.0000015f; // Przyspieszenie
+const float deceleration = 0.000001f; // Hamowanie
+const float maxSpeed = 0.5f;
+float lastAcceleratingSpeed = 0.0f;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Understeer");
@@ -307,56 +319,90 @@ int main() {
             for (const auto& roadPart : roadSprites) {
                 window.draw(roadPart);
             }
-            float velocity = 0.05f;
-            const float rotationSpeed = 0.035f;
-            const float acceleration = 0.001f; // Przyspieszenie
-            const float deceleration = 0.001f; // Hamowanie
-            const float maxSpeed = 0.5f;
 
-            sf::Vector2f carPosition = carSprite.getPosition();
-            float carWidth = carSprite.getGlobalBounds().width;
-            float carHeight = carSprite.getGlobalBounds().height;
-
-
+            // Logika przyspieszania i hamowania
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-                    for (const auto& roadPart : roadSprites) {
-                        if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
-                            // Samochód znajduje siê w elemencie drogi
-                            float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
-                            float offsetX = velocity * std::cos(angleRad);
-                            float offsetY = velocity * std::sin(angleRad);
-
-                            // Sprawdzanie czy samochód nie wyje¿d¿a poza element drogi
-                            if (carSprite.getPosition().x + offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
-                                carSprite.getPosition().x + offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
-                                carSprite.getPosition().y + offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
-                                carSprite.getPosition().y + offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
-                                carSprite.move(offsetX, offsetY);
-                            }
-                        }
-                    }
+                isAccelerating = true;
+                wasKeyPressed = true;
+                keyTimer.restart();
+            }
+            else {
+                if (wasKeyPressed) {
+                    wasKeyPressed = false;
+                    keyTimer.restart();
+                    lastAcceleratingSpeed = currentSpeed;
                 }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                else if (keyTimer.getElapsedTime().asMilliseconds() > 100) {
+                    isAccelerating = false;
+                }
+            }
+
+            if (isAccelerating) {
+                if (currentSpeed < maxSpeed) {
+                    currentSpeed += acceleration;
+                }
+            }
+            else {
+                if (currentSpeed > 0.0f) {
+                    currentSpeed -= deceleration; // Logika stopniowego zwalniania
+                }
+                else {
+                    currentSpeed = 0.0f;
+                }
+            }
+
+            // Logika poruszania samochodu z pewn¹ prêdkoœci¹
+            if (currentSpeed > 0.0f || lastAcceleratingSpeed > 0.0f) {
+                
+                
+                float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
+                float offsetX = currentSpeed * std::cos(angleRad);
+                float offsetY = currentSpeed * std::sin(angleRad);
+
                 for (const auto& roadPart : roadSprites) {
                     if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
-                        // Samochód znajduje siê w elemencie drogi
-                        float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
-                        float offsetX = velocity * std::cos(angleRad);
-                        float offsetY = velocity * std::sin(angleRad);
-
-                        // Sprawdzanie czy samochód nie wyje¿d¿a poza element drogi
                         if (carSprite.getPosition().x + offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
                             carSprite.getPosition().x + offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
                             carSprite.getPosition().y + offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
                             carSprite.getPosition().y + offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
-                            carSprite.move(-offsetX, -offsetY);
+                            carSprite.move(offsetX, offsetY);
                         }
                     }
                 }
             }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                if (currentSpeed > 0.0f) {
+                    currentSpeed -= deceleration * 3; // Logika hamowania
+                    if (currentSpeed < 0.0f) {
+                        currentSpeed = 0.0f;
+                    }
+                }
+                else {
+                    float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f); // Zmiana k¹ta na ty³
+
+                    // Ustawienie minimalnej wartoœci prêdkoœci, nawet gdy prêdkoœæ wynosi zero lub jest ujemna
+                    float minSpeed = 0.01f;
+                    float offsetX = minSpeed * std::cos(angleRad);
+                    float offsetY = minSpeed * std::sin(angleRad);
+
+                    // Logika poruszania siê do ty³u
+                    for (const auto& roadPart : roadSprites) {
+                        if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
+                            if (carSprite.getPosition().x - offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
+                                carSprite.getPosition().x - offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
+                                carSprite.getPosition().y - offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
+                                carSprite.getPosition().y - offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
+                                carSprite.move(-offsetX, -offsetY);
+                            }
+                        }
+                    }
+                }
+            }
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
                 carRotation -= rotationSpeed;
             }
+
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
                 carRotation += rotationSpeed;
             }
