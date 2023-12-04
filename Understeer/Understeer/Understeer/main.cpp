@@ -8,14 +8,27 @@ bool accelerating = false;
 bool isAccelerating = false;
 bool wasKeyPressed = false;
 sf::Clock keyTimer;
-const float rotationSpeed = 0.035f;
-const float acceleration = 0.0000015f; // Przyspieszenie
-const float deceleration = 0.000001f; // Hamowanie
-const float maxSpeed = 0.5f;
+const float rotationSpeed = 1.25f;
+const float acceleration = 0.015f; // Przyspieszenie
+const float deceleration = 0.01f; // Hamowanie
+const float maxSpeed = 2.1f;
 float lastAcceleratingSpeed = 0.0f;
+int lapsCompleted = 0;
+bool raceFinished = false;
+bool lapCounted = false;
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Understeer");
+    window.setFramerateLimit(60);
+    sf::Texture finishLineTexture;
+    if (!finishLineTexture.loadFromFile("Sprites/finish_line.png")) {
+        // Obs³uga b³êdu ³adowania tekstury
+    }
+
+    sf::Sprite finishLineSprite;
+    finishLineSprite.setTexture(finishLineTexture);
+    finishLineSprite.setOrigin(finishLineSprite.getLocalBounds().width / 2.0f, finishLineSprite.getLocalBounds().height / 2.0f);
+    finishLineSprite.setPosition(100.0f, 150.0f);
 
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("Sprites/desert1.png"))
@@ -110,7 +123,7 @@ int main() {
     sf::Sprite carSprite;
     carSprite.setTexture(carTexture);
     carSprite.setOrigin(carSprite.getLocalBounds().width / 2.0f, carSprite.getLocalBounds().height / 2.0f);
-    carSprite.setPosition(100.0f,100.0f);
+    carSprite.setPosition(100.0f,400.0f);
 
     // Przyciski menu startowego
     sf::RectangleShape startButton(sf::Vector2f(300, 50));
@@ -212,6 +225,10 @@ int main() {
     int selectedButton = 0;
     int previousSelectedButton = 0;
     float carRotation = 0.0f;
+    sf::Clock gameTimeClock;
+    sf::Text gameTimeText("", buttonFont, 30);
+    gameTimeText.setFillColor(sf::Color::White);
+    gameTimeText.setPosition(500, 20);
 
     while (window.isOpen()) {
         sf::Event event;
@@ -257,6 +274,7 @@ int main() {
                                 std::cout << "Enter pressed!" << std::endl;
                                 inGame = true;
                                 inSubmenu1 = false;
+                                gameTimeClock.restart();
                             }
                             else if (selectedButton == 1) {
                                 // Wczytaj grê
@@ -314,12 +332,23 @@ int main() {
             }
         }
         window.clear();
+        
         if (inGame) {
             window.draw(raceTrack1Background);
             for (const auto& roadPart : roadSprites) {
                 window.draw(roadPart);
             }
+            window.draw(finishLineSprite);
+            sf::Time elapsedTime = gameTimeClock.getElapsedTime();
+            int minutes = static_cast<int>(elapsedTime.asSeconds()) / 60;
+            int seconds = static_cast<int>(elapsedTime.asSeconds()) % 60;
 
+            // Tworzenie tekstu z czasem w formacie "Czas: minuty : sekundy"
+            std::string timeString = "Time: " + std::to_string(minutes) + " : " + std::to_string(seconds);
+            gameTimeText.setString(timeString);
+
+            // Wyœwietlanie tekstu z czasem
+            window.draw(gameTimeText);
             // Logika przyspieszania i hamowania
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
                 isAccelerating = true;
@@ -350,7 +379,30 @@ int main() {
                     currentSpeed = 0.0f;
                 }
             }
+            if (carSprite.getGlobalBounds().intersects(finishLineSprite.getGlobalBounds()) && !raceFinished) {
+                if (!lapCounted) {
+                    lapsCompleted++;
+                    lapCounted = true;
+                    std::cout << lapsCompleted;
+                    if (lapsCompleted >= 3) {
+                        raceFinished = true;
+                        // Obliczenie czasu wyœcigu
+                        sf::Time elapsedTime = gameTimeClock.getElapsedTime();
+                        int minutes = static_cast<int>(elapsedTime.asSeconds()) / 60;
+                        int seconds = static_cast<int>(elapsedTime.asSeconds()) % 60;
+                        std::string raceTime = "Race Completed in: " + std::to_string(minutes) + " minutes " + std::to_string(seconds) + " seconds";
 
+                        // Wyœwietlenie komunikatu o zakoñczeniu wyœcigu
+                        sf::Text raceCompletedText(raceTime, buttonFont, 30);
+                        raceCompletedText.setFillColor(sf::Color::White);
+                        raceCompletedText.setPosition(250, 250);
+                        window.draw(raceCompletedText);
+                    }
+                }
+            }
+            else {
+                lapCounted = false;
+            }
             // Logika poruszania samochodu z pewn¹ prêdkoœci¹
             if (currentSpeed > 0.0f || lastAcceleratingSpeed > 0.0f) {
                 
@@ -381,7 +433,7 @@ int main() {
                     float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f); // Zmiana k¹ta na ty³
 
                     // Ustawienie minimalnej wartoœci prêdkoœci, nawet gdy prêdkoœæ wynosi zero lub jest ujemna
-                    float minSpeed = 0.01f;
+                    float minSpeed = 0.15f;
                     float offsetX = minSpeed * std::cos(angleRad);
                     float offsetY = minSpeed * std::sin(angleRad);
 
@@ -410,6 +462,7 @@ int main() {
             carSprite.setRotation(carRotation);
             window.draw(carSprite);
         }
+
         else {
             // Rysuj pozosta³e elementy w zale¿noœci od aktualnego stanu gry
             if (!inSettings) {
