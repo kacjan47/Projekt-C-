@@ -28,7 +28,7 @@ int main() {
     sf::Sprite finishLineSprite;
     finishLineSprite.setTexture(finishLineTexture);
     finishLineSprite.setOrigin(finishLineSprite.getLocalBounds().width / 2.0f, finishLineSprite.getLocalBounds().height / 2.0f);
-    finishLineSprite.setPosition(100.0f, 150.0f);
+    finishLineSprite.setPosition(125.0f, 240.0f);
 
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("Sprites/desert1.png"))
@@ -69,53 +69,274 @@ int main() {
     roadSprite.setOrigin(roadSprite.getLocalBounds().width / 2.0f, roadSprite.getLocalBounds().height / 2.0f);
 
     std::vector<sf::Sprite> roadSprites;
-    for (int i = 0; i < 40; ++i) {
+    for (int i = 0; i < 1300; ++i) {
         sf::Sprite roadPart(roadTexture);
         roadPart.setOrigin(roadPart.getLocalBounds().width / 2.0f, roadPart.getLocalBounds().height / 2.0f);
-        roadPart.setPosition(100.0f + i * 50.0f, 100.0f);
         roadSprites.push_back(roadPart);
     }
-    roadSprites[0].setPosition(100.0f, 100.0f);
-    roadSprites[1].setPosition(150.0f, 100.0f);
-    roadSprites[2].setPosition(200.0f, 100.0f);
-    roadSprites[3].setPosition(250.0f, 100.0f);
-    roadSprites[4].setPosition(300.0f, 100.0f);
-    roadSprites[5].setPosition(350.0f, 100.0f);
-    roadSprites[6].setPosition(400.0f, 100.0f);
-    roadSprites[7].setPosition(450.0f, 100.0f);
-    roadSprites[8].setPosition(500.0f, 100.0f);
-    roadSprites[9].setPosition(550.0f, 100.0f);
-    roadSprites[10].setPosition(600.0f, 100.0f);
-    roadSprites[11].setPosition(650.0f, 100.0f);
-    roadSprites[12].setPosition(700.0f, 100.0f);
-    roadSprites[13].setPosition(700.0f, 150.0f);
-    roadSprites[14].setPosition(700.0f, 200.0f);
-    roadSprites[15].setPosition(700.0f, 250.0f);
-    roadSprites[16].setPosition(700.0f, 300.0f);
-    roadSprites[17].setPosition(700.0f, 350.0f);
-    roadSprites[18].setPosition(700.0f, 400.0f);
-    roadSprites[19].setPosition(700.0f, 450.0f);
-    roadSprites[20].setPosition(700.0f, 500.0f);
-    roadSprites[21].setPosition(650.0f, 500.0f);
-    roadSprites[22].setPosition(600.0f, 500.0f);
-    roadSprites[23].setPosition(550.0f, 500.0f);
-    roadSprites[24].setPosition(500.0f, 500.0f);
-    roadSprites[25].setPosition(450.0f, 500.0f);
-    roadSprites[26].setPosition(400.0f, 500.0f);
-    roadSprites[27].setPosition(350.0f, 500.0f);
-    roadSprites[28].setPosition(300.0f, 500.0f);
-    roadSprites[29].setPosition(250.0f, 500.0f);
-    roadSprites[30].setPosition(200.0f, 500.0f);
-    roadSprites[31].setPosition(150.0f, 500.0f);
-    roadSprites[32].setPosition(100.0f, 500.0f);
-    roadSprites[33].setPosition(100.0f, 450.0f);
-    roadSprites[34].setPosition(100.0f, 400.0f);
-    roadSprites[35].setPosition(100.0f, 350.0f);
-    roadSprites[36].setPosition(100.0f, 300.0f);
-    roadSprites[37].setPosition(100.0f, 250.0f);
-    roadSprites[38].setPosition(100.0f, 200.0f);
-    roadSprites[39].setPosition(100.0f, 150.0f);
-
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 34; j++)
+        {  
+            int index = i * 34 + j;
+            roadSprites[index].setPosition(100.0f + i * 10.0f, 150.0f + j * 10.0f);
+        }
+    }
+    roadSprites[216].setPosition(160.0f, 160.0f);
+    roadSprites[217].setPosition(160.0f, 150.0f);
+    roadSprites[218].setPosition(170.0f, 150.0f);
+    roadSprites[219].setPosition(110.0f, 140.0f);
+    roadSprites[220].setPosition(120.0f, 140.0f);
+    roadSprites[221].setPosition(130.0f, 140.0f);
+    roadSprites[222].setPosition(140.0f, 140.0f);
+    roadSprites[223].setPosition(150.0f, 140.0f);
+    roadSprites[224].setPosition(160.0f, 140.0f);
+    roadSprites[225].setPosition(170.0f, 140.0f);
+    roadSprites[226].setPosition(180.0f, 140.0f);
+    roadSprites[227].setPosition(120.0f, 130.0f);
+    roadSprites[228].setPosition(130.0f, 130.0f);
+    roadSprites[229].setPosition(140.0f, 130.0f);
+    roadSprites[230].setPosition(150.0f, 130.0f);
+    roadSprites[231].setPosition(160.0f, 130.0f);
+    roadSprites[232].setPosition(170.0f, 130.0f);
+    roadSprites[233].setPosition(180.0f, 130.0f);
+    roadSprites[234].setPosition(190.0f, 130.0f);
+    roadSprites[235].setPosition(200.0f, 130.0f);
+    roadSprites[236].setPosition(210.0f, 130.0f);
+    roadSprites[237].setPosition(220.0f, 130.0f);
+    roadSprites[238].setPosition(230.0f, 130.0f);
+    roadSprites[239].setPosition(240.0f, 130.0f);
+    roadSprites[240].setPosition(250.0f, 130.0f);
+    roadSprites[241].setPosition(260.0f, 130.0f);
+    roadSprites[242].setPosition(270.0f, 130.0f);
+    roadSprites[243].setPosition(280.0f, 130.0f);
+    roadSprites[244].setPosition(290.0f, 130.0f);
+    roadSprites[245].setPosition(300.0f, 130.0f);
+    roadSprites[246].setPosition(310.0f, 130.0f);
+    roadSprites[247].setPosition(320.0f, 130.0f);
+    roadSprites[248].setPosition(330.0f, 130.0f);
+    roadSprites[249].setPosition(340.0f, 130.0f);
+    roadSprites[250].setPosition(350.0f, 130.0f);
+    roadSprites[251].setPosition(130.0f, 120.0f);
+    roadSprites[252].setPosition(140.0f, 120.0f);
+    roadSprites[253].setPosition(150.0f, 120.0f);
+    roadSprites[254].setPosition(160.0f, 120.0f);
+    roadSprites[255].setPosition(170.0f, 120.0f);
+    roadSprites[256].setPosition(180.0f, 120.0f);
+    roadSprites[257].setPosition(190.0f, 120.0f);
+    roadSprites[258].setPosition(200.0f, 120.0f);
+    roadSprites[259].setPosition(210.0f, 120.0f);
+    roadSprites[260].setPosition(220.0f, 120.0f);
+    roadSprites[261].setPosition(230.0f, 120.0f);
+    roadSprites[262].setPosition(240.0f, 120.0f);
+    roadSprites[263].setPosition(250.0f, 120.0f);
+    roadSprites[264].setPosition(260.0f, 120.0f);
+    roadSprites[265].setPosition(270.0f, 120.0f);
+    roadSprites[266].setPosition(280.0f, 120.0f);
+    roadSprites[267].setPosition(290.0f, 120.0f);
+    roadSprites[268].setPosition(300.0f, 120.0f);
+    roadSprites[269].setPosition(310.0f, 120.0f);
+    roadSprites[270].setPosition(320.0f, 120.0f);
+    roadSprites[271].setPosition(330.0f, 120.0f);
+    roadSprites[272].setPosition(340.0f, 120.0f);
+    roadSprites[273].setPosition(140.0f, 110.0f);
+    roadSprites[274].setPosition(150.0f, 110.0f);
+    roadSprites[275].setPosition(160.0f, 110.0f);
+    roadSprites[276].setPosition(170.0f, 110.0f);
+    roadSprites[277].setPosition(180.0f, 110.0f);
+    roadSprites[278].setPosition(190.0f, 110.0f);
+    roadSprites[279].setPosition(200.0f, 110.0f);
+    roadSprites[280].setPosition(210.0f, 110.0f);
+    roadSprites[281].setPosition(220.0f, 110.0f);
+    roadSprites[282].setPosition(230.0f, 110.0f);
+    roadSprites[283].setPosition(240.0f, 110.0f);
+    roadSprites[284].setPosition(250.0f, 110.0f);
+    roadSprites[285].setPosition(260.0f, 110.0f);
+    roadSprites[286].setPosition(270.0f, 110.0f);
+    roadSprites[287].setPosition(280.0f, 110.0f);
+    roadSprites[288].setPosition(290.0f, 110.0f);
+    roadSprites[289].setPosition(300.0f, 110.0f);
+    roadSprites[290].setPosition(310.0f, 110.0f);
+    roadSprites[291].setPosition(320.0f, 110.0f);
+    roadSprites[292].setPosition(330.0f, 110.0f);
+    roadSprites[293].setPosition(150.0f, 100.0f);
+    roadSprites[294].setPosition(160.0f, 100.0f);
+    roadSprites[295].setPosition(170.0f, 100.0f);
+    roadSprites[296].setPosition(180.0f, 100.0f);
+    roadSprites[297].setPosition(190.0f, 100.0f);
+    roadSprites[298].setPosition(200.0f, 100.0f);
+    roadSprites[299].setPosition(210.0f, 100.0f);
+    roadSprites[300].setPosition(220.0f, 100.0f);
+    roadSprites[301].setPosition(230.0f, 100.0f);
+    roadSprites[302].setPosition(240.0f, 100.0f);
+    roadSprites[303].setPosition(250.0f, 100.0f);
+    roadSprites[304].setPosition(260.0f, 100.0f);
+    roadSprites[305].setPosition(270.0f, 100.0f);
+    roadSprites[306].setPosition(280.0f, 100.0f);
+    roadSprites[307].setPosition(290.0f, 100.0f);
+    roadSprites[308].setPosition(300.0f, 100.0f);
+    roadSprites[390].setPosition(310.0f, 100.0f);
+    roadSprites[391].setPosition(320.0f, 100.0f);
+    roadSprites[392].setPosition(160.0f, 90.0f);
+    roadSprites[393].setPosition(170.0f, 90.0f);
+    roadSprites[394].setPosition(180.0f, 90.0f);
+    roadSprites[395].setPosition(190.0f, 90.0f);
+    roadSprites[396].setPosition(200.0f, 90.0f);
+    roadSprites[397].setPosition(210.0f, 90.0f);
+    roadSprites[398].setPosition(220.0f, 90.0f);
+    roadSprites[399].setPosition(230.0f, 90.0f);
+    roadSprites[400].setPosition(240.0f, 90.0f);
+    roadSprites[401].setPosition(250.0f, 90.0f);
+    roadSprites[402].setPosition(260.0f, 90.0f);
+    roadSprites[403].setPosition(270.0f, 90.0f);
+    roadSprites[404].setPosition(280.0f, 90.0f);
+    roadSprites[405].setPosition(290.0f, 90.0f);
+    roadSprites[406].setPosition(300.0f, 90.0f);
+    roadSprites[407].setPosition(310.0f, 90.0f);
+    roadSprites[408].setPosition(170.0f, 80.0f);
+    roadSprites[409].setPosition(180.0f, 80.0f);
+    roadSprites[410].setPosition(190.0f, 80.0f);
+    roadSprites[411].setPosition(200.0f, 80.0f);
+    roadSprites[412].setPosition(210.0f, 80.0f);
+    roadSprites[413].setPosition(220.0f, 80.0f);
+    roadSprites[414].setPosition(230.0f, 80.0f);
+    roadSprites[415].setPosition(240.0f, 80.0f);
+    roadSprites[416].setPosition(250.0f, 80.0f);
+    roadSprites[417].setPosition(260.0f, 80.0f);
+    roadSprites[418].setPosition(270.0f, 80.0f);
+    roadSprites[419].setPosition(280.0f, 80.0f);
+    roadSprites[420].setPosition(290.0f, 80.0f);
+    roadSprites[421].setPosition(300.0f, 80.0f);
+    roadSprites[422].setPosition(360.0f, 140.0f);
+    roadSprites[423].setPosition(350.0f, 140.0f);
+    roadSprites[424].setPosition(340.0f, 140.0f);
+    roadSprites[425].setPosition(330.0f, 140.0f);
+    roadSprites[426].setPosition(320.0f, 140.0f);
+    roadSprites[427].setPosition(310.0f, 140.0f);
+    roadSprites[428].setPosition(300.0f, 140.0f);
+    roadSprites[429].setPosition(290.0f, 140.0f);
+    roadSprites[430].setPosition(370.0f, 150.0f);
+    roadSprites[431].setPosition(360.0f, 150.0f);
+    roadSprites[432].setPosition(350.0f, 150.0f);
+    roadSprites[433].setPosition(340.0f, 150.0f);
+    roadSprites[434].setPosition(330.0f, 150.0f);
+    roadSprites[435].setPosition(320.0f, 150.0f);
+    roadSprites[436].setPosition(310.0f, 150.0f);
+    roadSprites[437].setPosition(300.0f, 150.0f);
+    roadSprites[438].setPosition(370.0f, 160.0f);
+    roadSprites[439].setPosition(360.0f, 160.0f);
+    roadSprites[440].setPosition(350.0f, 160.0f);
+    roadSprites[441].setPosition(340.0f, 160.0f);
+    roadSprites[442].setPosition(330.0f, 160.0f);
+    roadSprites[443].setPosition(320.0f, 160.0f);
+    roadSprites[444].setPosition(310.0f, 160.0f);
+    for (int i = 0; i < 6; i++)
+    {
+        for (int j = 0; j < 14; j++)
+        {
+            int index = 445 + i * 14 + j;
+            roadSprites[index].setPosition(320.0f + i * 10.0f, 170.0f + j * 10.0f);
+        }
+    }
+    roadSprites[529].setPosition(380.0f, 290.0f);
+    roadSprites[530].setPosition(380.0f, 300.0f);
+    roadSprites[531].setPosition(390.0f, 300.0f);
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 532 + i;
+        roadSprites[index].setPosition(330.0f + i * 10.0f, 310.0f);
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        int index = 540 + i;
+        roadSprites[index].setPosition(340.0f + i * 10.0f, 320.0f);
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        int index = 566 + i;
+        roadSprites[index].setPosition(350.0f + i * 10.0f, 330.0f);
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        int index = 592 + i;
+        roadSprites[index].setPosition(360.0f + i * 10.0f, 340.0f);
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        int index = 618 + i;
+        roadSprites[index].setPosition(370.0f + i * 10.0f, 350.0f);
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        int index = 644 + i;
+        roadSprites[index].setPosition(380.0f + i * 10.0f, 360.0f);
+    }
+    for (int i = 0; i < 26; i++)
+    {
+        int index = 670 + i;
+        roadSprites[index].setPosition(390.0f + i * 10.0f, 370.0f);
+    }
+    roadSprites[696].setPosition(580.0f, 380.0f);
+    roadSprites[697].setPosition(590.0f, 380.0f);
+    roadSprites[698].setPosition(590.0f, 390.0f);
+    roadSprites[699].setPosition(600.0f, 380.0f);
+    roadSprites[700].setPosition(600.0f, 390.0f);
+    roadSprites[701].setPosition(600.0f, 400.0f);
+    for (int i = 0; i < 17; i++)
+    {
+        int index = 702 + i;
+        roadSprites[index].setPosition(610.0f, 370.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 16; i++)
+    {
+        int index = 719 + i;
+        roadSprites[index].setPosition(620.0f, 370.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 15; i++)
+    {
+        int index = 735 + i;
+        roadSprites[index].setPosition(630.0f, 370.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 14; i++)
+    {
+        int index = 750 + i;
+        roadSprites[index].setPosition(640.0f, 370.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 12; i++)
+    {
+        int index = 764 + i;
+        roadSprites[index].setPosition(650.0f, 380.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 10; i++)
+    {
+        int index = 776 + i;
+        roadSprites[index].setPosition(660.0f, 390.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 786 + i;
+        roadSprites[index].setPosition(600.0f, 460.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 794 + i;
+        roadSprites[index].setPosition(590.0f, 470.0f + i * 10.0f);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        int index = 802 + i;
+        roadSprites[index].setPosition(580.0f, 480.0f + i * 10.0f);
+    }
+    int help = 0;
+    for (int i = 0; i < 48; i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            int index = 810 + help;
+            roadSprites[index].setPosition(100.0f + i * 10.0f, 490.0f + j * 10.0f);
+            help++;
+        }
+    }
     sf::Sprite raceTrack1Background;
     raceTrack1Background.setTexture(raceTrack1Texture);
     sf::Sprite startMenuBackground;
@@ -379,7 +600,23 @@ int main() {
                     currentSpeed = 0.0f;
                 }
             }
-            if (carSprite.getGlobalBounds().intersects(finishLineSprite.getGlobalBounds()) && !raceFinished) {
+            float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
+            float offsetX = currentSpeed * std::cos(angleRad);
+            float offsetY = currentSpeed * std::sin(angleRad);
+            // Logika poruszania samochodu z pewn¹ prêdkoœci¹
+            if (currentSpeed > 0.0f || lastAcceleratingSpeed > 0.0f) {
+                for (const auto& roadPart : roadSprites) {
+                    if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
+                        if (carSprite.getPosition().x + offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
+                            carSprite.getPosition().x + offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
+                            carSprite.getPosition().y + offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
+                            carSprite.getPosition().y + offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
+                            carSprite.move(offsetX, offsetY);
+                        }
+                    }
+                }
+            }
+            if (carSprite.getGlobalBounds().intersects(finishLineSprite.getGlobalBounds()) && !raceFinished && offsetY < 0) {
                 if (!lapCounted) {
                     lapsCompleted++;
                     lapCounted = true;
@@ -402,25 +639,6 @@ int main() {
             }
             else {
                 lapCounted = false;
-            }
-            // Logika poruszania samochodu z pewn¹ prêdkoœci¹
-            if (currentSpeed > 0.0f || lastAcceleratingSpeed > 0.0f) {
-                
-                
-                float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
-                float offsetX = currentSpeed * std::cos(angleRad);
-                float offsetY = currentSpeed * std::sin(angleRad);
-
-                for (const auto& roadPart : roadSprites) {
-                    if (carSprite.getGlobalBounds().intersects(roadPart.getGlobalBounds())) {
-                        if (carSprite.getPosition().x + offsetX > roadPart.getPosition().x - roadPart.getGlobalBounds().width / 2.0f &&
-                            carSprite.getPosition().x + offsetX < roadPart.getPosition().x + roadPart.getGlobalBounds().width / 2.0f &&
-                            carSprite.getPosition().y + offsetY > roadPart.getPosition().y - roadPart.getGlobalBounds().height / 2.0f &&
-                            carSprite.getPosition().y + offsetY < roadPart.getPosition().y + roadPart.getGlobalBounds().height / 2.0f) {
-                            carSprite.move(offsetX, offsetY);
-                        }
-                    }
-                }
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
                 if (currentSpeed > 0.0f) {
