@@ -16,7 +16,7 @@ float lastAcceleratingSpeed = 0.0f;
 int lapsCompleted = 0;
 bool raceFinished = false;
 bool lapCounted = false;
-
+bool inRaceMenu = false;
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Understeer");
     window.setFramerateLimit(60);
@@ -77,7 +77,7 @@ int main() {
     for (int i = 0; i < 6; i++)
     {
         for (int j = 0; j < 34; j++)
-        {  
+        {
             int index = i * 34 + j;
             roadSprites[index].setPosition(100.0f + i * 10.0f, 150.0f + j * 10.0f);
         }
@@ -337,6 +337,390 @@ int main() {
             help++;
         }
     }
+
+    std::vector<sf::Sprite> roadSprites2;
+    for (int i = 0; i < 2500; ++i) {
+        sf::Sprite roadPart2(roadTexture);
+        roadPart2.setOrigin(roadPart2.getLocalBounds().width / 2.0f, roadPart2.getLocalBounds().height / 2.0f);
+        roadSprites2.push_back(roadPart2);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            int index = i * 10 + j;
+            roadSprites2[index].setPosition(100.0f + i * 10.0f, 150.0f + j * 10.0f);
+        }
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 100 + i;
+        roadSprites2[index].setPosition(110.0f + i * 10.0f, 250.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 110 + i;
+        roadSprites2[index].setPosition(120.0f + i * 10.0f, 260.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 120 + i;
+        roadSprites2[index].setPosition(130.0f + i * 10.0f, 270.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 130 + i;
+        roadSprites2[index].setPosition(130.0f + i * 10.0f, 280.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 140 + i;
+        roadSprites2[index].setPosition(130.0f + i * 10.0f, 290.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 150 + i;
+        roadSprites2[index].setPosition(130.0f + i * 10.0f, 300.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 160 + i;
+        roadSprites2[index].setPosition(120.0f + i * 10.0f, 310.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 170 + i;
+        roadSprites2[index].setPosition(110.0f + i * 10.0f, 320.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 180 + i;
+        roadSprites2[index].setPosition(100.0f + i * 10.0f, 330.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 190 + i;
+        roadSprites2[index].setPosition(90.0f + i * 10.0f, 340.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 200 + i;
+        roadSprites2[index].setPosition(80.0f + i * 10.0f, 350.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 210 + i;
+        roadSprites2[index].setPosition(70.0f + i * 10.0f, 360.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 220 + i;
+        roadSprites2[index].setPosition(70.0f + i * 10.0f, 370.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 230 + i;
+        roadSprites2[index].setPosition(70.0f + i * 10.0f, 380.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 240 + i;
+        roadSprites2[index].setPosition(70.0f + i * 10.0f, 390.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 250 + i;
+        roadSprites2[index].setPosition(80.0f + i * 10.0f, 400.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 260 + i;
+        roadSprites2[index].setPosition(90.0f + i * 10.0f, 410.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 270 + i;
+        roadSprites2[index].setPosition(100.0f + i * 10.0f, 420.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 280 + i;
+        roadSprites2[index].setPosition(110.0f + i * 10.0f, 430.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 290 + i;
+        roadSprites2[index].setPosition(120.0f + i * 10.0f, 440.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 300 + i;
+        roadSprites2[index].setPosition(130.0f + i * 10.0f, 450.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 310 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 460.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 320 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 470.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 330 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 480.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 340 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 490.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 350 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 500.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 360 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 510.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 370 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 520.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 380 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 530.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 390 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 540.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 400 + i;
+        roadSprites2[index].setPosition(140.0f + i * 10.0f, 550.0f);
+    }
+    help = 0;
+    for (int i = 0; i < 30; i++)
+    {
+        for (int j = 0; j < 8; j++)
+        {
+            int index = 410 + help;
+            roadSprites2[index].setPosition(230.0f + i * 10.0f, 480.0f + j * 10.0f);
+            help++;
+        }
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 700 + i;
+        roadSprites2[index].setPosition(450.0f + i * 10.0f, 470.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 710 + i;
+        roadSprites2[index].setPosition(460.0f + i * 10.0f, 460.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 720 + i;
+        roadSprites2[index].setPosition(470.0f + i * 10.0f, 450.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 730 + i;
+        roadSprites2[index].setPosition(480.0f + i * 10.0f, 440.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 740 + i;
+        roadSprites2[index].setPosition(490.0f + i * 10.0f, 430.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 750 + i;
+        roadSprites2[index].setPosition(500.0f + i * 10.0f, 420.0f);
+    }
+    help = 0;
+    for (int i = 0; i < 15; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            int index = 760 + help;
+            roadSprites2[index].setPosition(500.0f + i * 10.0f, 360.0f + j * 10.0f);
+            help++;
+        }
+    }
+    for (int i = 0; i < 11; i++)
+    {
+        int index = 900 + i;
+        roadSprites2[index].setPosition(570.0f + i * 10.0f, 350.0f);
+    }
+    for (int i = 0; i < 11; i++)
+    {
+        int index = 920 + i;
+        roadSprites2[index].setPosition(580.0f + i * 10.0f, 340.0f);
+    }
+    for (int i = 0; i < 11; i++)
+    {
+        int index = 940 + i;
+        roadSprites2[index].setPosition(590.0f + i * 10.0f, 330.0f);
+    }
+    for (int i = 0; i < 11; i++)
+    {
+        int index = 960 + i;
+        roadSprites2[index].setPosition(600.0f + i * 10.0f, 320.0f);
+    }
+    help = 0;
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            int index = 990 + help;
+            roadSprites2[index].setPosition(620.0f + i * 10.0f, 260.0f + j * 10.0f);
+            help++;
+        }
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1100 + i;
+        roadSprites2[index].setPosition(610.0f + i * 10.0f, 250.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1110 + i;
+        roadSprites2[index].setPosition(600.0f + i * 10.0f, 240.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1120 + i;
+        roadSprites2[index].setPosition(590.0f + i * 10.0f, 230.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1130 + i;
+        roadSprites2[index].setPosition(580.0f + i * 10.0f, 220.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1140 + i;
+        roadSprites2[index].setPosition(570.0f + i * 10.0f, 210.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1150 + i;
+        roadSprites2[index].setPosition(560.0f + i * 10.0f, 200.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1160 + i;
+        roadSprites2[index].setPosition(550.0f + i * 10.0f, 190.0f);
+    }
+    help = 0;
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            int index = 1170 + help;
+            roadSprites2[index].setPosition(550.0f + i * 10.0f, 130.0f + j * 10.0f);
+            help++;
+        }
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1300 + i;
+        roadSprites2[index].setPosition(540.0f + i * 10.0f, 120.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1310 + i;
+        roadSprites2[index].setPosition(530.0f + i * 10.0f, 110.0f);
+    }
+    for (int i = 0; i < 31; i++)
+    {
+        for (int j = 0; j < 6; j++)
+        {
+            int index = 1320 + help;
+            roadSprites2[index].setPosition(300.0f + i * 10.0f, 50.0f + j * 10.0f);
+            help++;
+        }
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1600 + i;
+        roadSprites2[index].setPosition(290.0f + i * 10.0f, 110.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1610 + i;
+        roadSprites2[index].setPosition(280.0f + i * 10.0f, 120.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1620 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 130.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1630 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 140.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1640 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 150.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1650 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 160.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1660 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 170.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1670 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 180.0f);
+    }
+    for (int i = 0; i < 9; i++)
+    {
+        int index = 1680 + i;
+        roadSprites2[index].setPosition(270.0f + i * 10.0f, 190.0f);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        int index = 1690 + i;
+        roadSprites2[index].setPosition(190.0f + i * 10.0f, 150.0f);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        int index = 1700 + i;
+        roadSprites2[index].setPosition(190.0f + i * 10.0f, 160.0f);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        int index = 1710 + i;
+        roadSprites2[index].setPosition(190.0f + i * 10.0f, 170.0f);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        int index = 1720 + i;
+        roadSprites2[index].setPosition(190.0f + i * 10.0f, 180.0f);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        int index = 1730 + i;
+        roadSprites2[index].setPosition(190.0f + i * 10.0f, 190.0f);
+    }
     sf::Sprite raceTrack1Background;
     raceTrack1Background.setTexture(raceTrack1Texture);
     sf::Sprite startMenuBackground;
@@ -344,7 +728,7 @@ int main() {
     sf::Sprite carSprite;
     carSprite.setTexture(carTexture);
     carSprite.setOrigin(carSprite.getLocalBounds().width / 2.0f, carSprite.getLocalBounds().height / 2.0f);
-    carSprite.setPosition(100.0f,400.0f);
+    carSprite.setPosition(100.0f, 400.0f);
 
     // Przyciski menu startowego
     sf::RectangleShape startButton(sf::Vector2f(300, 50));
@@ -439,10 +823,42 @@ int main() {
     backText2.setOrigin(backText2Rect.left + backText2Rect.width / 2.0f, backText2Rect.top + backText2Rect.height / 2.0f);
     backText2.setPosition(backButton2.getPosition().x + backButton2.getSize().x / 2.0f, backButton2.getPosition().y + backButton2.getSize().y / 2.0f);
 
-    bool inSettings = false;
-    bool inSubmenu1 = false;
-    bool inSubmenu2 = false;
-    bool inGame = false;
+    sf::RectangleShape raceOption1Button(sf::Vector2f(200, 50)); // Rozmiar przyk³adowy
+    raceOption1Button.setPosition(100, 100); // Pozycja przyk³adowa
+
+    sf::RectangleShape raceOption2Button(sf::Vector2f(200, 50));
+    raceOption2Button.setPosition(100, 160);
+
+    sf::RectangleShape raceOption3Button(sf::Vector2f(200, 50));
+    raceOption3Button.setPosition(100, 220);
+
+    sf::RectangleShape backToStartButton(sf::Vector2f(200, 50));
+    backToStartButton.setPosition(100, 280);
+
+    sf::Text raceOption1Text("Race 1", buttonFont, 30);
+    raceOption1Text.setFillColor(sf::Color::Black);
+    sf::FloatRect raceOption1TextRect = raceOption1Text.getLocalBounds();
+    raceOption1Text.setOrigin(raceOption1TextRect.left + raceOption1TextRect.width / 2.0f, raceOption1TextRect.top + raceOption1TextRect.height / 2.0f);
+    raceOption1Text.setPosition(raceOption1Button.getPosition().x + raceOption1Button.getSize().x / 2.0f, raceOption1Button.getPosition().y + raceOption1Button.getSize().y / 2.0f);
+
+    sf::Text raceOption2Text("Race 2", buttonFont, 30);
+    raceOption2Text.setFillColor(sf::Color::Black);
+    sf::FloatRect raceOption2TextRect = raceOption2Text.getLocalBounds();
+    raceOption2Text.setOrigin(raceOption2TextRect.left + raceOption2TextRect.width / 2.0f, raceOption2TextRect.top + raceOption2TextRect.height / 2.0f);
+    raceOption2Text.setPosition(raceOption2Button.getPosition().x + raceOption2Button.getSize().x / 2.0f, raceOption2Button.getPosition().y + raceOption2Button.getSize().y / 2.0f);
+
+    sf::Text raceOption3Text("Race 3", buttonFont, 30);
+    raceOption3Text.setFillColor(sf::Color::Black);
+    sf::FloatRect raceOption3TextRect = raceOption3Text.getLocalBounds();
+    raceOption3Text.setOrigin(raceOption3TextRect.left + raceOption3TextRect.width / 2.0f, raceOption3TextRect.top + raceOption3TextRect.height / 2.0f);
+    raceOption3Text.setPosition(raceOption3Button.getPosition().x + raceOption3Button.getSize().x / 2.0f, raceOption3Button.getPosition().y + raceOption3Button.getSize().y / 2.0f);
+
+    sf::Text backToStartText("Back", buttonFont, 30);
+    backToStartText.setFillColor(sf::Color::Black);
+    sf::FloatRect backToStartTextRect = backToStartText.getLocalBounds();
+    backToStartText.setOrigin(backToStartTextRect.left + backToStartTextRect.width / 2.0f, backToStartTextRect.top + backToStartTextRect.height / 2.0f);
+    backToStartText.setPosition(backToStartButton.getPosition().x + backToStartButton.getSize().x / 2.0f, backToStartButton.getPosition().y + backToStartButton.getSize().y / 2.0f);
+
     int selectedButton = 0;
     int previousSelectedButton = 0;
     float carRotation = 0.0f;
@@ -451,65 +867,79 @@ int main() {
     gameTimeText.setFillColor(sf::Color::White);
     gameTimeText.setPosition(500, 20);
 
+    sf::Clock gameTimeClock1;
+    sf::Text gameTimeText1("", buttonFont, 30);
+    gameTimeText1.setFillColor(sf::Color::White);
+    gameTimeText1.setPosition(500, 20);
+
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+
             if (event.type == sf::Event::KeyPressed) {
                 if (!inSettings) {
-                    if (!inSubmenu1) {
+                    if (!inSubmenu1 && !inSubmenu2 && !inRaceMenu) {
+                        // Main menu navigation
                         if (event.key.code == sf::Keyboard::W) {
-                            selectedButton = (selectedButton - 1 + 3) % 3; // Nawigacja w menu startowym
+                            selectedButton = (selectedButton - 1 + 3) % 3;
                         }
                         else if (event.key.code == sf::Keyboard::S) {
-                            selectedButton = (selectedButton + 1) % 3; // Nawigacja w menu startowym
+                            selectedButton = (selectedButton + 1) % 3;
                         }
                         else if (event.key.code == sf::Keyboard::Enter) {
+                            // Start game
                             if (selectedButton == 0) {
-                                // Rozpocznij grê
                                 inSubmenu1 = true;
                                 previousSelectedButton = selectedButton;
                                 selectedButton = 0;
                             }
+                            // Settings
                             else if (selectedButton == 1) {
                                 inSettings = true;
                                 selectedButton = 0;
                             }
+                            // Choose Race
                             else if (selectedButton == 2) {
                                 window.close();
                             }
                         }
                     }
-                    else if (!inSubmenu2) {
+                    else if (inSubmenu1) {
+                        // Submenu 1 navigation
                         if (event.key.code == sf::Keyboard::W) {
-                            selectedButton = (selectedButton - 1 + 4) % 4; // Nawigacja w submenu 1
+                            selectedButton = (selectedButton - 1 + 4) % 4;
                         }
                         else if (event.key.code == sf::Keyboard::S) {
-                            selectedButton = (selectedButton + 1) % 4; // Nawigacja w submenu 1
+                            selectedButton = (selectedButton + 1) % 4;
                         }
                         else if (event.key.code == sf::Keyboard::Enter) {
                             if (selectedButton == 0) {
-                                // Rozpocznij now¹ grê
+                                // Start a new game
                                 std::cout << "Enter pressed!" << std::endl;
                                 inGame = true;
                                 inSubmenu1 = false;
                                 gameTimeClock.restart();
                             }
-                            else if (selectedButton == 1) {
-                                // Wczytaj grê
-                            }
                             else if (selectedButton == 2) {
-                                // Wybierz rasê
+                                // Przejœcie do inRaceMenu
+                                inSubmenu1 = false;
+                                inRaceMenu = true;
+                                previousSelectedButton = selectedButton;
+                                selectedButton = 0; // Opcjonalnie, resetuj wybrany przycisk w inRaceMenu
                             }
-                            else if (selectedButton == 3) {
+                            else if (selectedButton == 3)
+                            {
                                 inSubmenu1 = false;
                                 selectedButton = previousSelectedButton;
                             }
+                            // ... [Other submenu 1 options]
                         }
+                        // ... [Your existing logic for submenu 1]
                     }
-                    else { // Obs³uga submenu 2
+                    else if (inSubmenu2) {
                         if (event.key.code == sf::Keyboard::W) {
                             selectedButton = (selectedButton - 1 + 3) % 3; // Nawigacja w submenu 2
                         }
@@ -526,6 +956,36 @@ int main() {
                             else if (selectedButton == 2) {
                                 inSubmenu2 = false;
                                 selectedButton = previousSelectedButton;
+                            }
+                        }
+                    }
+                    else if (inRaceMenu) {
+                        // 'Choose Race' menu navigation
+                        if (event.key.code == sf::Keyboard::W) {
+                            selectedButton = (selectedButton - 1 + 4) % 4;
+                        }
+                        else if (event.key.code == sf::Keyboard::S) {
+                            selectedButton = (selectedButton + 1) % 4;
+                        }
+                        else if (event.key.code == sf::Keyboard::Enter) {
+                            // Handle race menu options here
+                            if (selectedButton == 0) {
+                                inGame = true;
+                                inRaceMenu = false;
+                                gameTimeClock1.restart();
+                            }
+                            else if (selectedButton == 1) {
+                                inGame2 = true;
+                                inRaceMenu = false;
+                                gameTimeClock1.restart();
+                            }
+                            else if (selectedButton == 2) {
+                                // Race option 3
+                            }
+                            else if (selectedButton == 3) {
+                                inRaceMenu = false;
+                                inSubmenu1 = true;
+                                selectedButton = 0;
                             }
                         }
                     }
@@ -553,7 +1013,7 @@ int main() {
             }
         }
         window.clear();
-        
+
         if (inGame) {
             window.draw(raceTrack1Background);
             for (const auto& roadPart : roadSprites) {
@@ -680,22 +1140,160 @@ int main() {
             carSprite.setRotation(carRotation);
             window.draw(carSprite);
         }
+        else if (inGame2)
+        {
+            window.draw(raceTrack1Background);
+            for (const auto& roadPart2 : roadSprites2) {
+                window.draw(roadPart2);
+            }
+            sf::Time elapsedTime = gameTimeClock.getElapsedTime();
+            int minutes = static_cast<int>(elapsedTime.asSeconds()) / 60;
+            int seconds = static_cast<int>(elapsedTime.asSeconds()) % 60;
 
+            // Tworzenie tekstu z czasem w formacie "Czas: minuty : sekundy"
+            std::string timeString = "Time: " + std::to_string(minutes) + " : " + std::to_string(seconds);
+            gameTimeText.setString(timeString);
+
+            // Wyœwietlanie tekstu z czasem
+            window.draw(gameTimeText);
+            // Logika przyspieszania i hamowania
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+                isAccelerating = true;
+                wasKeyPressed = true;
+                keyTimer.restart();
+            }
+            else {
+                if (wasKeyPressed) {
+                    wasKeyPressed = false;
+                    keyTimer.restart();
+                    lastAcceleratingSpeed = currentSpeed;
+                }
+                else if (keyTimer.getElapsedTime().asMilliseconds() > 100) {
+                    isAccelerating = false;
+                }
+            }
+
+            if (isAccelerating) {
+                if (currentSpeed < maxSpeed) {
+                    currentSpeed += acceleration;
+                }
+            }
+            else {
+                if (currentSpeed > 0.0f) {
+                    currentSpeed -= deceleration; // Logika stopniowego zwalniania
+                }
+                else {
+                    currentSpeed = 0.0f;
+                }
+            }
+            float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f);
+            float offsetX = currentSpeed * std::cos(angleRad);
+            float offsetY = currentSpeed * std::sin(angleRad);
+            // Logika poruszania samochodu z pewn¹ prêdkoœci¹
+            if (currentSpeed > 0.0f || lastAcceleratingSpeed > 0.0f) {
+                for (const auto& roadPart2 : roadSprites2) {
+                    if (carSprite.getGlobalBounds().intersects(roadPart2.getGlobalBounds())) {
+                        if (carSprite.getPosition().x + offsetX > roadPart2.getPosition().x - roadPart2.getGlobalBounds().width / 2.0f &&
+                            carSprite.getPosition().x + offsetX < roadPart2.getPosition().x + roadPart2.getGlobalBounds().width / 2.0f &&
+                            carSprite.getPosition().y + offsetY > roadPart2.getPosition().y - roadPart2.getGlobalBounds().height / 2.0f &&
+                            carSprite.getPosition().y + offsetY < roadPart2.getPosition().y + roadPart2.getGlobalBounds().height / 2.0f) {
+                            carSprite.move(offsetX, offsetY);
+                        }
+                    }
+                }
+            }
+            if (carSprite.getGlobalBounds().intersects(finishLineSprite.getGlobalBounds()) && !raceFinished && offsetY < 0) {
+                if (!lapCounted) {
+                    lapsCompleted++;
+                    lapCounted = true;
+                    std::cout << lapsCompleted;
+                    if (lapsCompleted >= 3) {
+                        raceFinished = true;
+                        // Obliczenie czasu wyœcigu
+                        sf::Time elapsedTime = gameTimeClock.getElapsedTime();
+                        int minutes = static_cast<int>(elapsedTime.asSeconds()) / 60;
+                        int seconds = static_cast<int>(elapsedTime.asSeconds()) % 60;
+                        std::string raceTime = "Race Completed in: " + std::to_string(minutes) + " minutes " + std::to_string(seconds) + " seconds";
+
+                        // Wyœwietlenie komunikatu o zakoñczeniu wyœcigu
+                        sf::Text raceCompletedText(raceTime, buttonFont, 30);
+                        raceCompletedText.setFillColor(sf::Color::White);
+                        raceCompletedText.setPosition(250, 250);
+                        window.draw(raceCompletedText);
+                    }
+                }
+            }
+            else {
+                lapCounted = false;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+                if (currentSpeed > 0.0f) {
+                    currentSpeed -= deceleration * 3; // Logika hamowania
+                    if (currentSpeed < 0.0f) {
+                        currentSpeed = 0.0f;
+                    }
+                }
+                else {
+                    float angleRad = (carRotation - 90.0f) * (3.14159265f / 180.0f); // Zmiana k¹ta na ty³
+
+                    // Ustawienie minimalnej wartoœci prêdkoœci, nawet gdy prêdkoœæ wynosi zero lub jest ujemna
+                    float minSpeed = 0.15f;
+                    float offsetX = minSpeed * std::cos(angleRad);
+                    float offsetY = minSpeed * std::sin(angleRad);
+
+                    // Logika poruszania siê do ty³u
+                    for (const auto& roadPart2 : roadSprites2) {
+                        if (carSprite.getGlobalBounds().intersects(roadPart2.getGlobalBounds())) {
+                            if (carSprite.getPosition().x - offsetX > roadPart2.getPosition().x - roadPart2.getGlobalBounds().width / 2.0f &&
+                                carSprite.getPosition().x - offsetX < roadPart2.getPosition().x + roadPart2.getGlobalBounds().width / 2.0f &&
+                                carSprite.getPosition().y - offsetY > roadPart2.getPosition().y - roadPart2.getGlobalBounds().height / 2.0f &&
+                                carSprite.getPosition().y - offsetY < roadPart2.getPosition().y + roadPart2.getGlobalBounds().height / 2.0f) {
+                                carSprite.move(-offsetX, -offsetY);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+                carRotation -= rotationSpeed;
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+                carRotation += rotationSpeed;
+            }
+
+            carSprite.setRotation(carRotation);
+            window.draw(carSprite);
+        }
         else {
             // Rysuj pozosta³e elementy w zale¿noœci od aktualnego stanu gry
             if (!inSettings) {
-                if (!inSubmenu1) {
-                    // Rysuj przyciski menu startowego
-                    window.draw(startMenuBackground);
-                    window.draw(titleText);
-                    window.draw(startButton);
-                    window.draw(settingsButton);
-                    window.draw(exitButton);
-                    window.draw(startText);
-                    window.draw(settingsText);
-                    window.draw(exitText);
+                if (!inSubmenu1 && !inSubmenu2) {
+                    if (!inRaceMenu) {
+                        // Rysuj przyciski menu startowego
+                        window.draw(startMenuBackground);
+                        window.draw(titleText);
+                        window.draw(startButton);
+                        window.draw(settingsButton);
+                        window.draw(exitButton);
+                        window.draw(startText);
+                        window.draw(settingsText);
+                        window.draw(exitText);
+                    }
+                    else {
+                        // Rysuj przyciski inRaceMenu
+                        window.draw(raceOption1Button);
+                        window.draw(raceOption2Button);
+                        window.draw(raceOption3Button);
+                        window.draw(backToStartButton);
+                        window.draw(raceOption1Text);
+                        window.draw(raceOption2Text);
+                        window.draw(raceOption3Text);
+                        window.draw(backToStartText);
+                    }
                 }
-                else if (!inSubmenu2) {
+                else if (inSubmenu1) {
                     // Rysuj submenu 1
                     window.draw(startMenuBackground);
                     window.draw(titleText);
@@ -708,7 +1306,7 @@ int main() {
                     window.draw(chooseRaceText);
                     window.draw(backToStartText1);
                 }
-                else {
+                else if (inSubmenu2) {
                     // Rysuj submenu 2
                     window.draw(startMenuBackground);
                     window.draw(titleText);
@@ -796,6 +1394,34 @@ int main() {
                 loadGameButton.setOutlineThickness(0);
                 chooseRaceButton.setOutlineThickness(0);
                 backToStartButton1.setOutlineThickness(2);
+                break;
+            }
+        }
+        else if (inRaceMenu) {
+            switch (selectedButton) {
+            case 0:
+                raceOption1Button.setOutlineThickness(2);
+                raceOption2Button.setOutlineThickness(0);
+                raceOption3Button.setOutlineThickness(0);
+                backToStartButton.setOutlineThickness(0);
+                break;
+            case 1:
+                raceOption1Button.setOutlineThickness(0);
+                raceOption2Button.setOutlineThickness(2);
+                raceOption3Button.setOutlineThickness(0);
+                backToStartButton.setOutlineThickness(0);
+                break;
+            case 2:
+                raceOption1Button.setOutlineThickness(0);
+                raceOption2Button.setOutlineThickness(0);
+                raceOption3Button.setOutlineThickness(2);
+                backToStartButton.setOutlineThickness(0);
+                break;
+            case 3:
+                raceOption1Button.setOutlineThickness(0);
+                raceOption2Button.setOutlineThickness(0);
+                raceOption3Button.setOutlineThickness(0);
+                backToStartButton.setOutlineThickness(2);
                 break;
             }
         }
