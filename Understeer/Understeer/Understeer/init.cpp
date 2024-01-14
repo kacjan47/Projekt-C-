@@ -41,10 +41,6 @@ bool TextureLoader::loadTextures() {
 
     return success;
 }
-#include <SFML/Graphics.hpp>
-#include <iostream>
-
-
 bool inSettings = false;
 bool inSubmenu1 = false;
 bool inSubmenu2 = false;

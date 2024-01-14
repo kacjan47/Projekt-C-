@@ -2,7 +2,10 @@
 #include <SFML/Window/Event.hpp>
 #include <iostream>
 #include "init.h"
-
+#include <chrono>
+#include <thread>
+#include<windows.h>
+#include<fstream>
 float currentSpeed = 0.0f;
 bool accelerating = false;
 bool isAccelerating = false;
@@ -17,6 +20,19 @@ int lapsCompleted = 0;
 bool raceFinished = false;
 bool lapCounted = false;
 bool inRaceMenu = false;
+bool gameLost = false;
+bool waitForEnter = false;
+int totalSeconds;
+bool raceEnded1 = false;
+void resetGameState() {
+    // Resetuj stan gry
+    lapsCompleted = 0;
+    raceFinished = false;
+    inGame2 = false;
+    // Resetuj wszystkie inne zmienne i stany potrzebne do rozpoczêcia gry
+    // Na przyk³ad: Pozycja samochodu, czas gry, etc.
+}
+
 int main() {
     sf::RenderWindow window(sf::VideoMode(800, 600), "Understeer");
     window.setFramerateLimit(60);
@@ -24,12 +40,10 @@ int main() {
     if (!finishLineTexture.loadFromFile("Sprites/finish_line.png")) {
         // Obs³uga b³êdu ³adowania tekstury
     }
-
     sf::Sprite finishLineSprite;
     finishLineSprite.setTexture(finishLineTexture);
     finishLineSprite.setOrigin(finishLineSprite.getLocalBounds().width / 2.0f, finishLineSprite.getLocalBounds().height / 2.0f);
-    finishLineSprite.setPosition(125.0f, 240.0f);
-
+    finishLineSprite.setPosition(140.0f, 240.0f);
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("Sprites/desert1.png"))
     {
@@ -57,6 +71,11 @@ int main() {
     }
     sf::Texture roadTexture;
     if (!roadTexture.loadFromFile("Sprites/road.png"))
+    {
+        // error...
+    }
+    sf::Texture checkpointTexture;
+    if (!checkpointTexture.loadFromFile("Sprites/checkpoint.png"))
     {
         // error...
     }
@@ -872,6 +891,71 @@ int main() {
     gameTimeText1.setFillColor(sf::Color::White);
     gameTimeText1.setPosition(500, 20);
 
+    sf::Texture obstacleTexture;
+    std::vector<sf::Sprite> obstacles;
+    if (!obstacleTexture.loadFromFile("Sprites/obstacle.png")) {
+        // obs³uga b³êdu
+    }
+    for (int i = 0; i < 200; ++i) {
+        sf::Sprite obstacle(obstacleTexture);
+        obstacle.setOrigin(obstacle.getLocalBounds().width / 2.0f, obstacle.getLocalBounds().height / 2.0f);
+        obstacles.push_back(obstacle);
+    }
+    obstacles[0].setPosition(200.0f, 190.0f);
+    obstacles[1].setPosition(200.0f, 150.0f);
+    obstacles[2].setPosition(500.0f, 100.0f);
+    obstacles[3].setPosition(500.0f, 90.0f);
+    obstacles[4].setPosition(500.0f, 80.0f);
+    obstacles[5].setPosition(540.0f, 120.0f);
+    obstacles[6].setPosition(550.0f, 120.0f);
+    obstacles[7].setPosition(560.0f, 120.0f);
+    obstacles[8].setPosition(570.0f, 120.0f);
+    obstacles[9].setPosition(570.0f, 350.0f);
+    obstacles[10].setPosition(570.0f, 360.0f);
+    obstacles[11].setPosition(570.0f, 370.0f);
+    obstacles[12].setPosition(570.0f, 380.0f);
+    obstacles[13].setPosition(450.0f, 480.0f);
+    obstacles[14].setPosition(460.0f, 480.0f);
+    obstacles[15].setPosition(470.0f, 480.0f);
+    sf::Text loseText;
+    loseText.setFont(buttonFont);
+    loseText.setString("Przegrales! \nPowrot do menu glownego za 5s.");
+    loseText.setCharacterSize(30); // Ustaw rozmiar czcionki
+    loseText.setFillColor(sf::Color::White); // Ustaw kolor tekstu
+    loseText.setStyle(sf::Text::Bold); // Ustaw styl tekstu
+    sf::FloatRect textRect = loseText.getLocalBounds();
+    loseText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+    loseText.setPosition(sf::Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f)); // 'window' to Twoje sf::RenderWindow
+    for (int i = 0; i < 100; ++i) {
+        sf::Sprite obstacle(obstacleTexture);
+        obstacle.setOrigin(obstacle.getLocalBounds().width / 2.0f, obstacle.getLocalBounds().height / 2.0f);
+        obstacles.push_back(obstacle);
+    }
+    sf::Texture transparentTexture;
+    if (!transparentTexture.create(10, 80)) {
+        // obs³uga b³êdu
+    }
+
+    // Wype³nij teksturê przezroczystym kolorem
+    sf::Uint8* pixels = new sf::Uint8[10 * 80 * 4]; // 4 wartoœci na piksel (RGBA)
+    for (int i = 0; i < 10 * 80 * 4; i += 4) {
+        pixels[i] = 0;     // R
+        pixels[i + 1] = 0; // G
+        pixels[i + 2] = 0; // B
+        pixels[i + 3] = 0; // A (0 oznacza ca³kowit¹ przezroczystoœæ)
+    }
+    transparentTexture.update(pixels);
+    delete[] pixels; // Nie zapomnij zwolniæ pamiêci
+    std::vector<sf::Sprite> controlPoints; // Wektor przechowuj¹cy punkty kontrolne
+    for (int i = 0; i < 2; ++i) {
+        sf::Sprite checkpoint(transparentTexture);
+        checkpoint.setOrigin(checkpoint.getLocalBounds().width / 2.0f, checkpoint.getLocalBounds().height / 2.0f);
+        controlPoints.push_back(checkpoint);
+    }
+    controlPoints[0].setPosition(200, 190);
+    controlPoints[1].setPosition(590, 380);
+    std::vector<bool> controlPointsPassed(2, false); // Wektor flag dla ka¿dego punktu kontrolnego
+    bool allCheckpointsCleared = false; // Zmienna, która stanie siê true, jeœli wszystkie punkty zostan¹ przejechane
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -972,11 +1056,13 @@ int main() {
                             if (selectedButton == 0) {
                                 inGame = true;
                                 inRaceMenu = false;
+                                gameTimeClock.restart();
                                 gameTimeClock1.restart();
                             }
                             else if (selectedButton == 1) {
                                 inGame2 = true;
                                 inRaceMenu = false;
+                                gameTimeClock.restart();
                                 gameTimeClock1.restart();
                             }
                             else if (selectedButton == 2) {
@@ -1015,6 +1101,12 @@ int main() {
         window.clear();
 
         if (inGame) {
+
+            if (event.key.code == sf::Keyboard::Escape) {
+                inGame = false;
+                inRaceMenu = true;
+                selectedButton = 0;
+            }
             window.draw(raceTrack1Background);
             for (const auto& roadPart : roadSprites) {
                 window.draw(roadPart);
@@ -1137,16 +1229,41 @@ int main() {
                 carRotation += rotationSpeed;
             }
 
+            for (const auto& obstacle : obstacles) {
+                if (carSprite.getGlobalBounds().intersects(obstacle.getGlobalBounds())) {
+                    gameLost = true;
+                    waitForEnter = true;
+                    break;
+                }
+            }
             carSprite.setRotation(carRotation);
             window.draw(carSprite);
         }
+
         else if (inGame2)
         {
+            sf::FloatRect carBounds = carSprite.getGlobalBounds();
+            carBounds.left += 3; // Zmniejsz lew¹ krawêdŸ o 5 pikseli
+            carBounds.top += 3; // Zmniejsz górn¹ krawêdŸ o 5 pikseli
+            carBounds.width -= 10; // Zmniejsz szerokoœæ o 10 pikseli
+            carBounds.height -= 10;
+            if (event.key.code == sf::Keyboard::Escape) {
+                inGame2 = false;
+                inRaceMenu = true;
+                selectedButton = 0;
+            }
             window.draw(raceTrack1Background);
             for (const auto& roadPart2 : roadSprites2) {
                 window.draw(roadPart2);
             }
+            for (const auto& obstacle : obstacles) {
+                window.draw(obstacle);
+            }
+            for (const auto& checkpoint : controlPoints) {
+                window.draw(checkpoint);
+            }
             sf::Time elapsedTime = gameTimeClock.getElapsedTime();
+            totalSeconds = static_cast<int>(elapsedTime.asSeconds());
             int minutes = static_cast<int>(elapsedTime.asSeconds()) / 60;
             int seconds = static_cast<int>(elapsedTime.asSeconds()) % 60;
 
@@ -1202,26 +1319,60 @@ int main() {
                     }
                 }
             }
-            if (carSprite.getGlobalBounds().intersects(finishLineSprite.getGlobalBounds()) && !raceFinished && offsetY < 0) {
-                if (!lapCounted) {
-                    lapsCompleted++;
-                    lapCounted = true;
-                    std::cout << lapsCompleted;
-                    if (lapsCompleted >= 3) {
-                        raceFinished = true;
-                        // Obliczenie czasu wyœcigu
-                        sf::Time elapsedTime = gameTimeClock.getElapsedTime();
-                        int minutes = static_cast<int>(elapsedTime.asSeconds()) / 60;
-                        int seconds = static_cast<int>(elapsedTime.asSeconds()) % 60;
-                        std::string raceTime = "Race Completed in: " + std::to_string(minutes) + " minutes " + std::to_string(seconds) + " seconds";
+            for (const auto& obstacle : obstacles) {
+                if (carBounds.intersects(obstacle.getGlobalBounds())) {
+                    window.draw(loseText);
+                    window.display();
+                    Sleep(5000);
+                    window.clear();
+                    resetGameState();
+                    carSprite.setPosition(100.0f, 400.0f);
+                    currentSpeed = 0;
+                    gameTimeClock.restart();
+                    carRotation = 0;
+                    allCheckpointsCleared = false;
+                    std::fill(controlPointsPassed.begin(), controlPointsPassed.end(), false);
+                    inRaceMenu = true;
+                    std::ofstream outputFile("wyniki.txt");
 
-                        // Wyœwietlenie komunikatu o zakoñczeniu wyœcigu
-                        sf::Text raceCompletedText(raceTime, buttonFont, 30);
-                        raceCompletedText.setFillColor(sf::Color::White);
-                        raceCompletedText.setPosition(250, 250);
-                        window.draw(raceCompletedText);
+                    // SprawdŸ, czy plik jest otwarty
+                    if (outputFile.is_open()) {
+                        // Zapisz totalSeconds do pliku
+                        outputFile << totalSeconds << std::endl;
+
+                        // Zamknij plik
+                        outputFile.close();
+                    }
+                    else {
+                        std::cerr << "Nie mo¿na otworzyæ pliku do zapisu." << std::endl;
                     }
                 }
+            }
+            for (int i = 0; i < controlPoints.size(); ++i) {
+                if (!controlPointsPassed[i] && carBounds.intersects(controlPoints[i].getGlobalBounds())) {
+                    controlPointsPassed[i] = true;
+                }
+            }
+            allCheckpointsCleared = std::all_of(controlPointsPassed.begin(), controlPointsPassed.end(), [](bool passed) { return passed; });
+
+            if (allCheckpointsCleared) {
+                // Zmieñ zmienn¹, jeœli samochód przejecha³ przez wszystkie punkty kontrolne
+                // Na przyk³ad:
+                raceEnded1 = true;
+                std::cout << "Ukoñczono wyœcig";
+            }
+            if (carSprite.getGlobalBounds().intersects(finishLineSprite.getGlobalBounds()) && allCheckpointsCleared && offsetY < 0) {
+                std::cout << "Koniec gry";
+                Sleep(2000);
+                window.clear();
+                resetGameState();
+                carSprite.setPosition(100.0f, 400.0f);
+                currentSpeed = 0;
+                gameTimeClock.restart();
+                carRotation = 0;
+                allCheckpointsCleared = false;
+                std::fill(controlPointsPassed.begin(), controlPointsPassed.end(), false);
+                inRaceMenu = true;
             }
             else {
                 lapCounted = false;
@@ -1264,6 +1415,7 @@ int main() {
             }
 
             carSprite.setRotation(carRotation);
+            window.draw(finishLineSprite);
             window.draw(carSprite);
         }
         else {
@@ -1283,6 +1435,7 @@ int main() {
                     }
                     else {
                         // Rysuj przyciski inRaceMenu
+                        window.draw(startMenuBackground);
                         window.draw(raceOption1Button);
                         window.draw(raceOption2Button);
                         window.draw(raceOption3Button);
